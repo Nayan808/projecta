@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Purchases - Projecta</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .purchases-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .purchases-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .purchases-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            color: var(--text-color);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .purchases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .purchase-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .purchase-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .purchase-info {
+            padding: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .purchase-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .purchase-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .certificate-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .certificate-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .purchase-history {
+            margin-top: 2rem;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .status-completed {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .status-in-progress {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            margin-top: 2rem;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .purchases-tabs {
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <!-- <img src="../images/logo.png" alt="Projecta Logo" id="logo"> -->
+                <span>Projecta</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="challenges.html">Challenges</a>
+                <a href="about.html">About</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="faqs.html">FAQs</a>
+                <a href="career.html">Careers</a>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="user-menu">
+                    <img src="../images/avatar.jpg" alt="User Avatar" class="user-avatar">
+                    <div class="dropdown-menu">
+                        <a href="my-purchases.html" class="active">My Purchases</a>
+                        <a href="#" onclick="handleSignOut()">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Purchases Content -->
+    <div class="purchases-container">
+        <div class="purchases-header">
+            <h1>My Learning Journey</h1>
+            <button class="primary-btn" onclick="window.location.href='projects.html'">
+                <i class="fas fa-plus"></i> Browse More Projects
+            </button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="purchases-tabs">
+            <button class="tab-btn active" onclick="switchTab('in-progress')">In Progress</button>
+            <button class="tab-btn" onclick="switchTab('completed')">Completed</button>
+            <button class="tab-btn" onclick="switchTab('certificates')">Certificates</button>
+            <button class="tab-btn" onclick="switchTab('history')">Purchase History</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="tab-content">
+            <!-- Content will be loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Projecta</h3>
+                <p>Learn, build, and grow with our project-based learning platform.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="projects.html">All Projects</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="career.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Projecta. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Sample data
+        const purchases = {
+            'in-progress': [
+                {
+                    id: 1,
+                    title: "Full Stack Web Development",
+                    image: "../images/project1.jpg",
+                    progress: 65,
+                    lastAccessed: "2024-02-15",
+                    modules: 12,
+                    completedModules: 8
+                },
+                {
+                    id: 2,
+                    title: "Mobile App Development",
+                    image: "../images/project2.jpg",
+                    progress: 30,
+                    lastAccessed: "2024-02-14",
+                    modules: 10,
+                    completedModules: 3
+                }
+            ],
+            'completed': [
+                {
+                    id: 3,
+                    title: "React Fundamentals",
+                    image: "../images/project3.jpg",
+                    completedDate: "2024-01-20",
+                    certificate: true
+                }
+            ]
+        };
+
+        const purchaseHistory = [
+            {
+                id: 1,
+                title: "Full Stack Web Development",
+                date: "2024-02-10",
+                amount: "$49.99",
+                paymentId: "PAY-123456",
+                status: "completed"
+            },
+            {
+                id: 2,
+                title: "Mobile App Development",
+                date: "2024-02-12",
+                amount: "$39.99",
+                paymentId: "PAY-123457",
+                status: "completed"
+            }
+        ];
+
+        // Switch tabs
+        function switchTab(tab) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const content = document.getElementById('tab-content');
+            
+            switch(tab) {
+                case 'in-progress':
+                    displayInProgress();
+                    break;
+                case 'completed':
+                    displayCompleted();
+                    break;
+                case 'certificates':
+                    displayCertificates();
+                    break;
+                case 'history':
+                    displayHistory();
+                    break;
+            }
+        }
+
+        // Display in-progress projects
+        function displayInProgress() {
+            const content = document.getElementById('tab-content');
+            
+            if (purchases['in-progress'].length === 0) {
+                content.innerHTML = createEmptyState('No projects in progress');
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="purchases-grid">
+                    ${purchases['in-progress'].map(project => `
+                        <div class="purchase-card">
+                            <img src="${project.image}" alt="${project.title}" class="purchase-image">
+                            <div class="purchase-info">
+                                <h3>${project.title}</h3>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${project.progress}%"></div>
+                                </div>
+                                <div class="purchase-meta">
+                                    <span>${project.completedModules}/${project.modules} modules completed</span>
+                                    <span>Last accessed: ${project.lastAccessed}</span>
+                                </div>
+                                <div class="purchase-actions">
+                                    <button class="primary-btn" onclick="continueProject(${project.id})">
+                                        Continue Learning
+                                    </button>
+                                    <button class="secondary-btn" onclick="downloadResources(${project.id})">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Display completed projects
+        function displayCompleted() {
+            const content = document.getElementById('tab-content');
+            
+            if (purchases['completed'].length === 0) {
+                content.innerHTML = createEmptyState('No completed projects yet');
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="purchases-grid">
+                    ${purchases['completed'].map(project => `
+                        <div class="purchase-card">
+                            <img src="${project.image}" alt="${project.title}" class="purchase-image">
+                            <div class="purchase-info">
+                                <h3>${project.title}</h3>
+                                <span class="status-badge status-completed">Completed</span>
+                                <p>Completed on: ${project.completedDate}</p>
+                                <div class="purchase-actions">
+                                    <button class="primary-btn" onclick="reviewProject(${project.id})">
+                                        Review Project
+                                    </button>
+                                    ${project.certificate ? `
+                                        <button class="secondary-btn" onclick="downloadCertificate(${project.id})">
+                                            <i class="fas fa-certificate"></i> Certificate
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Display certificates
+        function displayCertificates() {
+            const content = document.getElementById('tab-content');
+            const certificates = purchases['completed'].filter(p => p.certificate);
+            
+            if (certificates.length === 0) {
+                content.innerHTML = createEmptyState('No certificates earned yet');
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="purchases-grid">
+                    ${certificates.map(project => `
+                        <div class="certificate-card">
+                            <div class="certificate-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <h3>${project.title}</h3>
+                            <p>Completed on: ${project.completedDate}</p>
+                            <button class="primary-btn" onclick="downloadCertificate(${project.id})">
+                                Download Certificate
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Display purchase history
+        function displayHistory() {
+            const content = document.getElementById('tab-content');
+            
+            if (purchaseHistory.length === 0) {
+                content.innerHTML = createEmptyState('No purchase history');
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="purchase-history">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Payment ID</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${purchaseHistory.map(purchase => `
+                                <tr>
+                                    <td>${purchase.title}</td>
+                                    <td>${purchase.date}</td>
+                                    <td>${purchase.amount}</td>
+                                    <td>${purchase.paymentId}</td>
+                                    <td>
+                                        <span class="status-badge status-${purchase.status}">
+                                            ${purchase.status.charAt(0).toUpperCase() + purchase.status.slice(1)}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Create empty state
+        function createEmptyState(message) {
+            return `
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <h3>${message}</h3>
+                    <p>Start learning by exploring our projects</p>
+                    <button class="primary-btn" onclick="window.location.href='projects.html'">
+                        Browse Projects
+                    </button>
+                </div>
+            `;
+        }
+
+        // Project actions
+        function continueProject(projectId) {
+            window.location.href = `project-content.html?id=${projectId}`;
+        }
+
+        function downloadResources(projectId) {
+            showSuccess('Downloading project resources...');
+        }
+
+        function reviewProject(projectId) {
+            window.location.href = `project-content.html?id=${projectId}&mode=review`;
+        }
+
+        function downloadCertificate(projectId) {
+            showSuccess('Downloading certificate...');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayInProgress();
+        });
+    </script>
+</body>
+</html>

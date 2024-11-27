@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges - Projecta</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .challenges-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .challenge-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: transform 0.3s;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .challenge-banner {
+            height: 150px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .challenge-content {
+            padding: 1.5rem;
+        }
+
+        .challenge-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-active {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .status-upcoming {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .challenge-info {
+            margin-bottom: 1rem;
+        }
+
+        .challenge-info p {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .challenge-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .leaderboard {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .rank {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .participant {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .participant img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .challenge-details-modal .modal-content {
+            max-width: 800px;
+        }
+
+        .challenge-rules {
+            margin-top: 1rem;
+        }
+
+        .challenge-rules li {
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-submission {
+            margin-top: 2rem;
+        }
+
+        .submission-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <!-- <img src="../images/logo.png" alt="Projecta Logo" id="logo"> -->
+                <span>Projecta</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="challenges.html" class="active">Challenges</a>
+                <a href="about.html">About</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="faqs.html">FAQs</a>
+                <a href="career.html">Careers</a>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="login-btn" onclick="showLoginModal()">Sign In</button>
+                <button class="signup-btn" onclick="showSignupModal()">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Challenges Section -->
+    <div class="challenges-container">
+        <h1>Coding Challenges</h1>
+        <p>Participate in our coding challenges and compete with other developers!</p>
+
+        <!-- Challenges Grid -->
+        <div class="challenges-grid" id="challenges-grid">
+            <!-- Challenges will be loaded dynamically -->
+        </div>
+
+        <!-- Challenge Details Modal -->
+        <div id="challenge-details-modal" class="modal">
+            <div class="modal-content challenge-details-modal">
+                <span class="close" onclick="closeModal('challenge-details-modal')">&times;</span>
+                <div id="challenge-details-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Projecta</h3>
+                <p>Learn, build, and grow with our project-based learning platform.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="projects.html">All Projects</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="career.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Projecta. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Challenges data
+        const challenges = [
+            {
+                id: 1,
+                title: "Web App Challenge",
+                description: "Build a responsive web application with modern features",
+                status: "active",
+                startDate: "2024-02-01",
+                endDate: "2024-02-28",
+                prize: "$500",
+                participants: 156,
+                leaderboard: [
+                    { rank: 1, name: "John Doe", score: 98, avatar: "../images/avatar1.jpg" },
+                    { rank: 2, name: "Jane Smith", score: 95, avatar: "../images/avatar2.jpg" },
+                    { rank: 3, name: "Mike Johnson", score: 92, avatar: "../images/avatar3.jpg" }
+                ]
+            },
+            {
+                id: 2,
+                title: "AI Innovation Challenge",
+                description: "Create an innovative AI solution for real-world problems",
+                status: "upcoming",
+                startDate: "2024-03-01",
+                endDate: "2024-03-31",
+                prize: "$1000",
+                participants: 89,
+                leaderboard: []
+            },
+            {
+                id: 3,
+                title: "Mobile App Challenge",
+                description: "Develop a cross-platform mobile application",
+                status: "active",
+                startDate: "2024-02-15",
+                endDate: "2024-03-15",
+                prize: "$750",
+                participants: 124,
+                leaderboard: [
+                    { rank: 1, name: "Sarah Wilson", score: 96, avatar: "../images/avatar4.jpg" },
+                    { rank: 2, name: "David Brown", score: 94, avatar: "../images/avatar5.jpg" },
+                    { rank: 3, name: "Emma Davis", score: 91, avatar: "../images/avatar6.jpg" }
+                ]
+            }
+        ];
+
+        // Display challenges
+        function displayChallenges() {
+            const challengesGrid = document.getElementById('challenges-grid');
+            challengesGrid.innerHTML = challenges.map(challenge => `
+                <div class="challenge-card">
+                    <div class="challenge-banner">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="challenge-content">
+                        <span class="challenge-status status-${challenge.status}">
+                            ${challenge.status.charAt(0).toUpperCase() + challenge.status.slice(1)}
+                        </span>
+                        <h3>${challenge.title}</h3>
+                        <p>${challenge.description}</p>
+                        <div class="challenge-info">
+                            <p><i class="fas fa-calendar"></i> ${challenge.startDate} - ${challenge.endDate}</p>
+                            <p><i class="fas fa-gift"></i> Prize: ${challenge.prize}</p>
+                            <p><i class="fas fa-users"></i> ${challenge.participants} participants</p>
+                        </div>
+                        <div class="challenge-actions">
+                            <button class="primary-btn" onclick="showChallengeDetails(${challenge.id})">
+                                View Details
+                            </button>
+                            ${challenge.status === 'active' ? `
+                                <button class="secondary-btn" onclick="joinChallenge(${challenge.id})">
+                                    Join Challenge
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                    ${challenge.leaderboard.length > 0 ? `
+                        <div class="leaderboard">
+                            <div class="leaderboard-header">
+                                <h4>Top Performers</h4>
+                                <button class="secondary-btn" onclick="showFullLeaderboard(${challenge.id})">
+                                    View All
+                                </button>
+                            </div>
+                            <table class="leaderboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Participant</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${challenge.leaderboard.map(entry => `
+                                        <tr>
+                                            <td class="rank">#${entry.rank}</td>
+                                            <td>
+                                                <div class="participant">
+                                                    <img src="${entry.avatar}" alt="${entry.name}">
+                                                    ${entry.name}
+                                                </div>
+                                            </td>
+                                            <td>${entry.score}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Show challenge details
+        function showChallengeDetails(challengeId) {
+            const challenge = challenges.find(c => c.id === challengeId);
+            const modal = document.getElementById('challenge-details-modal');
+            const content = document.getElementById('challenge-details-content');
+            
+            content.innerHTML = `
+                <h2>${challenge.title}</h2>
+                <p>${challenge.description}</p>
+                <div class="challenge-rules">
+                    <h3>Challenge Rules</h3>
+                    <ul>
+                        <li>Submit your solution before the deadline</li>
+                        <li>Your submission must be original work</li>
+                        <li>Follow the provided guidelines and requirements</li>
+                        <li>Include documentation with your submission</li>
+                    </ul>
+                </div>
+                ${challenge.status === 'active' ? `
+                    <div class="challenge-submission">
+                        <h3>Submit Your Solution</h3>
+                        <form class="submission-form" onsubmit="submitSolution(event, ${challengeId})">
+                            <input type="text" placeholder="Project Title" required>
+                            <textarea placeholder="Project Description" required></textarea>
+                            <div class="file-upload" onclick="document.getElementById('solution-file').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload your solution</p>
+                                <input type="file" id="solution-file" style="display: none" required>
+                            </div>
+                            <button type="submit" class="primary-btn">Submit Solution</button>
+                        </form>
+                    </div>
+                ` : ''}
+            `;
+            
+            showModal('challenge-details-modal');
+        }
+
+        // Join challenge
+        function joinChallenge(challengeId) {
+            if (!currentUser) {
+                showLoginModal();
+                return;
+            }
+            
+            // Here you would typically make an API call to join the challenge
+            showSuccess('Successfully joined the challenge!');
+        }
+
+        // Show full leaderboard
+        function showFullLeaderboard(challengeId) {
+            const challenge = challenges.find(c => c.id === challengeId);
+            // Implement full leaderboard view
+        }
+
+        // Submit solution
+        function submitSolution(event, challengeId) {
+            event.preventDefault();
+            if (!currentUser) {
+                showLoginModal();
+                return;
+            }
+            
+            // Here you would typically handle file upload and submission
+            showSuccess('Solution submitted successfully!');
+            closeModal('challenge-details-modal');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayChallenges();
+        });
+    </script>
+</body>
+</html>

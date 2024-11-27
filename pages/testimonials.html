@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials - Projecta</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .testimonial-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: transform 0.3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .testimonial-info h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-info p {
+            margin: 0;
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            color: #fbbf24;
+            margin: 1rem 0;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-project {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+
+        .success-stories {
+            margin: 4rem 0;
+        }
+
+        .story-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .story-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .story-image {
+            width: 100%;
+            border-radius: 0.5rem;
+        }
+
+        .video-testimonials {
+            margin: 4rem 0;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .video-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+        }
+
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .play-button:hover {
+            background-color: white;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .story-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <!-- <img src="../images/logo.png" alt="Projecta Logo" id="logo"> -->
+                <span>Projecta</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="challenges.html">Challenges</a>
+                <a href="about.html">About</a>
+                <a href="testimonials.html" class="active">Testimonials</a>
+                <a href="faqs.html">FAQs</a>
+                <a href="career.html">Careers</a>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="login-btn" onclick="showLoginModal()">Sign In</button>
+                <button class="signup-btn" onclick="showSignupModal()">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Testimonials Content -->
+    <div class="testimonials-container">
+        <h1>What Our Students Say</h1>
+        
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTestimonials('all')">All</button>
+            <button class="filter-btn" onclick="filterTestimonials('web')">Web Development</button>
+            <button class="filter-btn" onclick="filterTestimonials('mobile')">Mobile Development</button>
+            <button class="filter-btn" onclick="filterTestimonials('ai')">AI/ML</button>
+        </div>
+
+        <!-- Testimonials Grid -->
+        <div class="testimonials-grid" id="testimonials-grid">
+            <!-- Testimonials will be loaded dynamically -->
+        </div>
+
+        <!-- Success Stories -->
+        <div class="success-stories">
+            <h2>Success Stories</h2>
+            <div class="story-card">
+                <div class="story-header">
+                    <h3>From Beginner to Full-Stack Developer</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="story-content">
+                    <img src="../images/success1.jpg" alt="Success Story" class="story-image">
+                    <div>
+                        <p>"I started with zero coding knowledge. After completing multiple projects on Projecta, I landed my dream job as a Full-Stack Developer at a leading tech company. The project-based learning approach really works!"</p>
+                        <p class="testimonial-info">
+                            <strong>David Chen</strong><br>
+                            Full-Stack Developer at TechCorp
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Testimonials -->
+        <div class="video-testimonials">
+            <h2>Video Testimonials</h2>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="../images/video-thumb1.jpg" alt="Video Testimonial">
+                        <div class="play-button" onclick="playVideo(1)">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Sarah's Journey in Web Development</h3>
+                        <p>Learn how Sarah mastered React and landed her first dev job</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="../images/video-thumb2.jpg" alt="Video Testimonial">
+                        <div class="play-button" onclick="playVideo(2)">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3>Mike's Success in Mobile Development</h3>
+                        <p>How Mike built his first mobile app and started freelancing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Projecta</h3>
+                <p>Learn, build, and grow with our project-based learning platform.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="projects.html">All Projects</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="career.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Projecta. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Testimonials data
+        const testimonials = [
+            {
+                id: 1,
+                name: "John Smith",
+                role: "Frontend Developer",
+                avatar: "../images/avatar1.jpg",
+                rating: 5,
+                text: "The web development projects helped me master React and modern JavaScript. The hands-on approach is fantastic!",
+                project: "Web Development",
+                category: "web"
+            },
+            {
+                id: 2,
+                name: "Emily Brown",
+                role: "Mobile Developer",
+                avatar: "../images/avatar2.jpg",
+                rating: 5,
+                text: "Built my first React Native app through Projecta. The step-by-step guidance was invaluable.",
+                project: "Mobile Development",
+                category: "mobile"
+            },
+            {
+                id: 3,
+                name: "Michael Lee",
+                role: "AI Engineer",
+                avatar: "../images/avatar3.jpg",
+                rating: 5,
+                text: "The AI/ML projects are cutting-edge and practical. Great way to build a portfolio!",
+                project: "AI/ML",
+                category: "ai"
+            }
+        ];
+
+        // Display testimonials
+        function displayTestimonials(category = 'all') {
+            const filteredTestimonials = category === 'all' 
+                ? testimonials 
+                : testimonials.filter(t => t.category === category);
+
+            const grid = document.getElementById('testimonials-grid');
+            grid.innerHTML = filteredTestimonials.map(testimonial => `
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="${testimonial.avatar}" alt="${testimonial.name}" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h3>${testimonial.name}</h3>
+                            <p>${testimonial.role}</p>
+                        </div>
+                    </div>
+                    <div class="rating">
+                        ${Array(testimonial.rating).fill('<i class="fas fa-star"></i>').join('')}
+                    </div>
+                    <p class="testimonial-text">${testimonial.text}</p>
+                    <p class="testimonial-project">Project: ${testimonial.project}</p>
+                </div>
+            `).join('');
+        }
+
+        // Filter testimonials
+        function filterTestimonials(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase() === category);
+            });
+            displayTestimonials(category);
+        }
+
+        // Play video
+        function playVideo(videoId) {
+            // In a real application, this would open a video player or modal
+            alert(`Playing video ${videoId}`);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayTestimonials();
+        });
+    </script>
+</body>
+</html>

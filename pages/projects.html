@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Projecta</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        .projects-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-bar {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .filter-dropdown {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .pagination button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <!-- <img src="../images/logo.png" alt="Projecta Logo" id="logo"> -->
+                <span>Projecta</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="projects.html" class="active">Projects</a>
+                <a href="challenges.html">Challenges</a>
+                <a href="about.html">About</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="faqs.html">FAQs</a>
+                <a href="career.html">Careers</a>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="login-btn" onclick="showLoginModal()">Sign In</button>
+                <button class="signup-btn" onclick="showSignupModal()">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Projects Section -->
+    <div class="projects-container">
+        <h1>All Projects</h1>
+        
+        <!-- Filters -->
+        <div class="filters">
+            <div class="search-bar">
+                <input type="text" placeholder="Search projects..." onkeyup="filterProjects()">
+            </div>
+            <select class="filter-dropdown" onchange="filterProjects()">
+                <option value="all">All Categories</option>
+                <option value="web">Web Development</option>
+                <option value="mobile">Mobile Development</option>
+                <option value="desktop">Desktop Applications</option>
+                <option value="ai">AI/ML Projects</option>
+            </select>
+            <select class="filter-dropdown" onchange="filterProjects()">
+                <option value="all">All Levels</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+            </select>
+            <select class="filter-dropdown" onchange="sortProjects()">
+                <option value="popular">Most Popular</option>
+                <option value="newest">Newest First</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+            </select>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projects-grid">
+            <!-- Projects will be loaded dynamically -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <!-- Pagination buttons will be added dynamically -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Projecta</h3>
+                <p>Learn, build, and grow with our project-based learning platform.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="projects.html">All Projects</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="career.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Projecta. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('login-modal')">&times;</span>
+            <h2>Sign In</h2>
+            <div class="google-signin">
+                <div id="g_id_onload"
+                     data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                     data-callback="handleCredentialResponse">
+                </div>
+                <div class="g_id_signin" data-type="standard"></div>
+            </div>
+            <div class="divider">or</div>
+            <form id="login-form">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+                <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/payment.js"></script>
+    <script>
+        // Projects data
+        const allProjects = [
+            {
+                id: 1,
+                title: "E-commerce Website",
+                description: "Build a full-featured online store with shopping cart and payment integration",
+                price: 79.99,
+                image: "../images/project1.jpg",
+                category: "web",
+                level: "intermediate",
+                popularity: 95
+            },
+            {
+                id: 2,
+                title: "Social Media App",
+                description: "Create a mobile social networking application with real-time features",
+                price: 89.99,
+                image: "../images/project2.jpg",
+                category: "mobile",
+                level: "advanced",
+                popularity: 88
+            },
+            {
+                id: 3,
+                title: "Task Management System",
+                description: "Develop a desktop application for project and task management",
+                price: 59.99,
+                image: "../images/project3.jpg",
+                category: "desktop",
+                level: "beginner",
+                popularity: 92
+            },
+            {
+                id: 4,
+                title: "AI Image Recognition",
+                description: "Build an AI model for image classification and recognition",
+                price: 99.99,
+                image: "../images/project4.jpg",
+                category: "ai",
+                level: "advanced",
+                popularity: 85
+            }
+            // Add more projects as needed
+        ];
+
+        let currentPage = 1;
+        const projectsPerPage = 12;
+        let filteredProjects = [...allProjects];
+
+        // Filter projects based on search and filters
+        function filterProjects() {
+            const searchTerm = document.querySelector('.search-bar input').value.toLowerCase();
+            const category = document.querySelector('select:nth-of-type(1)').value;
+            const level = document.querySelector('select:nth-of-type(2)').value;
+
+            filteredProjects = allProjects.filter(project => {
+                const matchesSearch = project.title.toLowerCase().includes(searchTerm) ||
+                                    project.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'all' || project.category === category;
+                const matchesLevel = level === 'all' || project.level === level;
+
+                return matchesSearch && matchesCategory && matchesLevel;
+            });
+
+            currentPage = 1;
+            displayProjects();
+            updatePagination();
+        }
+
+        // Sort projects
+        function sortProjects() {
+            const sortBy = document.querySelector('select:nth-of-type(3)').value;
+
+            switch(sortBy) {
+                case 'popular':
+                    filteredProjects.sort((a, b) => b.popularity - a.popularity);
+                    break;
+                case 'newest':
+                    filteredProjects.sort((a, b) => b.id - a.id);
+                    break;
+                case 'price-low':
+                    filteredProjects.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filteredProjects.sort((a, b) => b.price - a.price);
+                    break;
+            }
+
+            displayProjects();
+        }
+
+        // Display projects for current page
+        function displayProjects() {
+            const projectsGrid = document.getElementById('projects-grid');
+            const start = (currentPage - 1) * projectsPerPage;
+            const end = start + projectsPerPage;
+            const pageProjects = filteredProjects.slice(start, end);
+
+            if (pageProjects.length === 0) {
+                projectsGrid.innerHTML = '<div class="no-results">No projects found matching your criteria</div>';
+                return;
+            }
+
+            projectsGrid.innerHTML = pageProjects.map(project => `
+                <div class="project-card">
+                    <img src="${project.image}" alt="${project.title}">
+                    <div class="project-info">
+                        <h3>${project.title}</h3>
+                        <p>${project.description}</p>
+                        <span class="price">$${project.price}</span>
+                        <button class="buy-btn" onclick="initiatePayment(${project.price}, '${project.title}')">
+                            Buy Now
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+            const pagination = document.getElementById('pagination');
+            
+            let paginationHTML = '';
+            
+            if (currentPage > 1) {
+                paginationHTML += `<button onclick="changePage(${currentPage - 1})">Previous</button>`;
+            }
+            
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `
+                    <button class="${i === currentPage ? 'active' : ''}" 
+                            onclick="changePage(${i})">${i}</button>
+                `;
+            }
+            
+            if (currentPage < totalPages) {
+                paginationHTML += `<button onclick="changePage(${currentPage + 1})">Next</button>`;
+            }
+            
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Change page
+        function changePage(page) {
+            currentPage = page;
+            displayProjects();
+            updatePagination();
+            window.scrollTo(0, 0);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayProjects();
+            updatePagination();
+        });
+    </script>
+</body>
+</html>

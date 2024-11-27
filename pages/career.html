@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers - Projecta</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .careers-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            border-radius: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .benefits-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .benefit-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .job-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-width: 150px;
+        }
+
+        .job-listings {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .job-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+        }
+
+        .job-info h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .job-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .job-description {
+            margin: 1rem 0;
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .job-tag {
+            padding: 0.25rem 0.75rem;
+            background-color: var(--background-color);
+            border-radius: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .application-modal .modal-content {
+            max-width: 600px;
+        }
+
+        .application-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+        }
+
+        .culture-section {
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .culture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .culture-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .culture-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .culture-content {
+            padding: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .job-card {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <!-- <img src="../images/logo.png" alt="Projecta Logo" id="logo"> -->
+                <span>Projecta</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="challenges.html">Challenges</a>
+                <a href="about.html">About</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="faqs.html">FAQs</a>
+                <a href="career.html" class="active">Careers</a>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="login-btn" onclick="showLoginModal()">Sign In</button>
+                <button class="signup-btn" onclick="showSignupModal()">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Careers Content -->
+    <div class="careers-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1>Join Our Team</h1>
+            <p>Build the future of tech education with us</p>
+        </div>
+
+        <!-- Benefits Section -->
+        <h2>Why Work With Us</h2>
+        <div class="benefits-section">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3>Remote Work</h3>
+                <p>Work from anywhere in the world with flexible hours</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Learning Budget</h3>
+                <p>Annual budget for courses and conferences</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Health Benefits</h3>
+                <p>Comprehensive health insurance coverage</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Career Growth</h3>
+                <p>Clear career progression and mentorship</p>
+            </div>
+        </div>
+
+        <!-- Job Listings -->
+        <h2>Open Positions</h2>
+        <div class="job-filters">
+            <select class="filter-select" onchange="filterJobs('department')">
+                <option value="all">All Departments</option>
+                <option value="engineering">Engineering</option>
+                <option value="design">Design</option>
+                <option value="product">Product</option>
+                <option value="marketing">Marketing</option>
+            </select>
+            <select class="filter-select" onchange="filterJobs('location')">
+                <option value="all">All Locations</option>
+                <option value="remote">Remote</option>
+                <option value="onsite">Onsite</option>
+                <option value="hybrid">Hybrid</option>
+            </select>
+            <select class="filter-select" onchange="filterJobs('experience')">
+                <option value="all">All Experience Levels</option>
+                <option value="entry">Entry Level</option>
+                <option value="mid">Mid Level</option>
+                <option value="senior">Senior Level</option>
+            </select>
+        </div>
+
+        <div class="job-listings" id="job-listings">
+            <!-- Job listings will be loaded dynamically -->
+        </div>
+
+        <!-- Culture Section -->
+        <div class="culture-section">
+            <h2>Our Culture</h2>
+            <p>Join a team that values innovation, collaboration, and growth</p>
+            <div class="culture-grid">
+                <div class="culture-card">
+                    <img src="../images/culture1.jpg" alt="Team Collaboration" class="culture-image">
+                    <div class="culture-content">
+                        <h3>Collaborative Environment</h3>
+                        <p>Work with talented individuals from around the world</p>
+                    </div>
+                </div>
+                <div class="culture-card">
+                    <img src="../images/culture2.jpg" alt="Innovation" class="culture-image">
+                    <div class="culture-content">
+                        <h3>Innovation First</h3>
+                        <p>Shape the future of tech education with cutting-edge solutions</p>
+                    </div>
+                </div>
+                <div class="culture-card">
+                    <img src="../images/culture3.jpg" alt="Work Life Balance" class="culture-image">
+                    <div class="culture-content">
+                        <h3>Work-Life Balance</h3>
+                        <p>Flexible schedules that fit your lifestyle</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Modal -->
+    <div id="application-modal" class="modal">
+        <div class="modal-content application-modal">
+            <span class="close" onclick="closeModal('application-modal')">&times;</span>
+            <h2>Apply for <span id="job-title-modal"></span></h2>
+            <form id="application-form" class="application-form" onsubmit="submitApplication(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Years of Experience</label>
+                    <input type="number" id="experience" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="resume">Resume</label>
+                    <div class="file-upload" onclick="document.getElementById('resume').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload your resume</p>
+                        <input type="file" id="resume" style="display: none" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cover-letter">Cover Letter</label>
+                    <textarea id="cover-letter" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="primary-btn">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Projecta</h3>
+                <p>Learn, build, and grow with our project-based learning platform.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="projects.html">All Projects</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="career.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Projecta. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Jobs data
+        const jobs = [
+            {
+                id: 1,
+                title: "Senior Full Stack Developer",
+                department: "engineering",
+                location: "remote",
+                experience: "senior",
+                salary: "$120,000 - $150,000",
+                type: "Full-time",
+                description: "We're looking for a Senior Full Stack Developer to help build and scale our learning platform.",
+                requirements: [
+                    "7+ years of experience in web development",
+                    "Strong expertise in React and Node.js",
+                    "Experience with cloud services (AWS/GCP)",
+                    "Strong problem-solving skills"
+                ],
+                tags: ["React", "Node.js", "AWS", "MongoDB"]
+            },
+            {
+                id: 2,
+                title: "UI/UX Designer",
+                department: "design",
+                location: "hybrid",
+                experience: "mid",
+                salary: "$80,000 - $100,000",
+                type: "Full-time",
+                description: "Join our design team to create beautiful and intuitive user experiences for our platform.",
+                requirements: [
+                    "3+ years of UI/UX design experience",
+                    "Proficiency in Figma and Adobe Creative Suite",
+                    "Experience with design systems",
+                    "Strong portfolio showcasing web/mobile designs"
+                ],
+                tags: ["Figma", "UI Design", "UX Research", "Design Systems"]
+            },
+            {
+                id: 3,
+                title: "Product Manager",
+                department: "product",
+                location: "onsite",
+                experience: "senior",
+                salary: "$110,000 - $140,000",
+                type: "Full-time",
+                description: "Lead product strategy and development for our educational platform.",
+                requirements: [
+                    "5+ years of product management experience",
+                    "Experience in EdTech industry",
+                    "Strong analytical and communication skills",
+                    "Technical background preferred"
+                ],
+                tags: ["Product Strategy", "Agile", "Data Analysis", "EdTech"]
+            }
+        ];
+
+        // Display jobs
+        function displayJobs(filteredJobs = jobs) {
+            const listings = document.getElementById('job-listings');
+            listings.innerHTML = filteredJobs.map(job => `
+                <div class="job-card">
+                    <div class="job-info">
+                        <h3>${job.title}</h3>
+                        <div class="job-meta">
+                            <span><i class="fas fa-building"></i> ${job.department}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                            <span><i class="fas fa-dollar-sign"></i> ${job.salary}</span>
+                            <span><i class="fas fa-clock"></i> ${job.type}</span>
+                        </div>
+                        <div class="job-description">
+                            <p>${job.description}</p>
+                            <ul>
+                                ${job.requirements.map(req => `<li>${req}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="job-tags">
+                            ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <button class="primary-btn" onclick="showApplicationModal(${job.id})">Apply Now</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter jobs
+        function filterJobs(filterType) {
+            const department = document.querySelector('select:nth-of-type(1)').value;
+            const location = document.querySelector('select:nth-of-type(2)').value;
+            const experience = document.querySelector('select:nth-of-type(3)').value;
+
+            const filteredJobs = jobs.filter(job => {
+                const matchesDepartment = department === 'all' || job.department === department;
+                const matchesLocation = location === 'all' || job.location === location;
+                const matchesExperience = experience === 'all' || job.experience === experience;
+                return matchesDepartment && matchesLocation && matchesExperience;
+            });
+
+            displayJobs(filteredJobs);
+        }
+
+        // Show application modal
+        function showApplicationModal(jobId) {
+            const job = jobs.find(j => j.id === jobId);
+            document.getElementById('job-title-modal').textContent = job.title;
+            showModal('application-modal');
+        }
+
+        // Submit application
+        function submitApplication(event) {
+            event.preventDefault();
+            // Here you would typically handle the form submission
+            showSuccess('Application submitted successfully!');
+            closeModal('application-modal');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayJobs();
+        });
+    </script>
+</body>
+</html>
